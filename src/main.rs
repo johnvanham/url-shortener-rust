@@ -5,14 +5,14 @@ fn index() -> &'static str {
     "URL Shortener"
 }
 
-#[get("/<url>")]
-fn shorten(url: String) -> String {
-    format!("Shortened URL: {}", url)
+#[get("/<url_key>")]
+fn short_url_redirect(url_key: String) -> String {
+    format!("Shortened URL: {}", url_key)
 }
 
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
-        .mount("/", routes![shorten])
+        .mount("/", routes![short_url_redirect])
 }
