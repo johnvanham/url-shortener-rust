@@ -7,6 +7,11 @@ async fn index() -> Option<NamedFile> {
     NamedFile::open("public/index.html").await.ok()
 }
 
+#[get("/style.css")]
+async fn style() -> Option<NamedFile> {
+    NamedFile::open("public/style.css").await.ok()
+}
+
 #[derive(FromForm)]
 pub struct ShortenURLFormData {
     #[field(name = "key")]
@@ -57,5 +62,5 @@ fn short_url_redirect(url_key: String) -> Result<Redirect, NotFound<String>> {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index, shorten, short_url_redirect])
+        .mount("/", routes![index, style, shorten, short_url_redirect])
 }
