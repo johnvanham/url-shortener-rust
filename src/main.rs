@@ -1,10 +1,40 @@
 #[macro_use] extern crate rocket;
-use rocket::response::{Redirect, status::NotFound};
+use rocket::{response::{Redirect, status::NotFound}, fs::NamedFile, form::Form};
 mod redis_handler;
 
 #[get("/")]
-fn index() -> &'static str {
-    "URL Shortener"
+async fn index() -> Option<NamedFile> {
+    NamedFile::open("public/index.html").await.ok()
+}
+
+#[derive(FromForm)]
+pub struct ShortenURLFormData {
+    #[field(name = "key")]
+    pub key: String,
+
+    #[field(name = "url")]
+    pub url: String,
+}
+
+#[post("/shorten", data = "<url_to_shorten>")]
+fn shorten(url_to_shorten: Form<ShortenURLFormData>) -> String {
+
+    let mut url_key = String::from("surl_");
+    url_key.push_str(&url_to_shorten.key);
+
+    let redis_result: Result<String, redis::RedisError> = redis_handler::set_url_in_redis(
+        url_key,
+        url_to_shorten.into_inner().url
+    );
+
+    match redis_result {
+        Ok(r) => {
+            format!("URL shortened successfully: {}", r)
+        },
+        Err(e) => {
+            format!("Error shortening URL: {}", e)
+        }
+    }
 }
 
 #[get("/<url_key>")]
@@ -27,6 +57,5 @@ fn short_url_redirect(url_key: String) -> Result<Redirect, NotFound<String>> {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index])
-        .mount("/", routes![short_url_redirect])
+        .mount("/", routes![index, shorten, short_url_redirect])
 }
