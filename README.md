@@ -25,7 +25,10 @@ Once you have the tools installed, clone this repo using your preferred method. 
 ### Running
 
 1. Start up redis using Docker: `docker run -p 6379:6379 -v redis_data:/data -it redis:latest`
-2. Use cargo in the project directory `cargo run`
+2. Use cargo in the project directory: `cargo run`
+3. Run tailwindcss to build the css file and (optionally) watch changes: `tailwindcss -i css/style.css -o public/style.css --watch`
+
+If editing any of the rust code you will need to stop and re-start cargo.
 
 ### Deploying
 
