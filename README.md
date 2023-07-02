@@ -1,4 +1,4 @@
-# URL Shortner
+# URL Shortner ![Build & Test](https://github.com/johnvanham/url-shortener-rust/actions/workflows/rust.yml/badge.svg)
 
 ## Overview
 
