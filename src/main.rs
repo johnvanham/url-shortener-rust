@@ -1,5 +1,5 @@
 #[macro_use] extern crate rocket;
-use rocket::{response::{Redirect, status::NotFound}, fs::NamedFile, form::Form, State};
+use rocket::{response::{Redirect, status::NotFound}, fs::NamedFile, form::Form};
 use log::{info, error, warn};
 mod db_handler;
 

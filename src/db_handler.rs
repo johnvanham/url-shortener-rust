@@ -1,6 +1,5 @@
 use rusqlite::{Connection, Result as SqliteResult};
-use std::path::Path;
-use log::{info, error};
+use log::info;
 
 pub fn init_database() -> SqliteResult<()> {
     let db_path = get_db_path();
