@@ -1,0 +1,11 @@
+[default]
+address = "0.0.0.0"
+port = 7575
+
+[debug]
+address = "0.0.0.0"
+port = 7575
+
+[release]
+address = "0.0.0.0"
+port = 7575

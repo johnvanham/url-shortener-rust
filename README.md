@@ -30,7 +30,7 @@ Once you have the tools installed, clone this repo using your preferred method. 
 
 The application will:
 - Create a SQLite database file (`urls.db`) automatically on first run
-- Start the web server on `http://127.0.0.1:8000`
+- Start the web server on `http://127.0.0.1:7575`
 - Log all operations to help with debugging
 
 If editing any of the rust code you will need to stop and re-start cargo.
@@ -45,7 +45,7 @@ docker compose up --build
 Or build and run manually:
 ```bash
 docker build -t url-shortener .
-docker run -p 8000:8000 -v $(pwd)/data:/app/data url-shortener
+docker run -p 7575:7575 -v $(pwd)/data:/app/data url-shortener
 ```
 
 ### Deploying
@@ -61,7 +61,7 @@ docker pull ghcr.io/johnvanham/url-shortener-rust:latest
 # Run with persistent data storage
 docker run -d \
   --name url-shortener \
-  -p 8000:8000 \
+  -p 7575:7575 \
   -v url_shortener_data:/app/data \
   -e RUST_LOG=info \
   ghcr.io/johnvanham/url-shortener-rust:latest
@@ -76,7 +76,7 @@ docker build -t url-shortener .
 # Run with data persistence
 docker run -d \
   --name url-shortener \
-  -p 8000:8000 \
+  -p 7575:7575 \
   -v $(pwd)/data:/app/data \
   -e RUST_LOG=info \
   url-shortener
@@ -91,33 +91,33 @@ docker run -d \
 
 ### Web Interface
 
-Navigate to `http://127.0.0.1:8000` in your browser to use the web interface:
+Navigate to `http://127.0.0.1:7575` in your browser to use the web interface:
 
 1. Enter a custom key (e.g., "google")
 2. Enter the URL to shorten (e.g., "https://www.google.com")
 3. Click "Shorten"
-4. Access your shortened URL at `http://127.0.0.1:8000/google`
+4. Access your shortened URL at `http://127.0.0.1:7575/google`
 
 ### API Testing with curl
 
 ```bash
 # Add a URL
-curl -X POST -d "key=test&url=https://www.google.com" http://127.0.0.1:8000/shorten
+curl -X POST -d "key=test&url=https://www.google.com" http://127.0.0.1:7575/shorten
 
 # Test the redirect (should return 303 with location header)
-curl -I http://127.0.0.1:8000/test
+curl -I http://127.0.0.1:7575/test
 
 # Test a non-existent key (should return 404)
-curl -I http://127.0.0.1:8000/nonexistent
+curl -I http://127.0.0.1:7575/nonexistent
 ```
 
 ### Example Response
 
 ```bash
-$ curl -X POST -d "key=example&url=https://www.example.com" http://127.0.0.1:8000/shorten
+$ curl -X POST -d "key=example&url=https://www.example.com" http://127.0.0.1:7575/shorten
 URL shortened successfully: Stored URL for key: surl_example
 
-$ curl -I http://127.0.0.1:8000/example
+$ curl -I http://127.0.0.1:7575/example
 HTTP/1.1 303 See Other
 location: https://www.example.com
 server: Rocket

@@ -46,20 +46,20 @@ This is a simple URL shortener built with Rust using the Rocket web framework an
 
 1. Run `RUST_LOG=info cargo run` for the Rust server with logging
 2. Run Tailwind CSS watcher for style changes
-3. The application serves on Rocket's default port (8000)
+3. The application serves on port 7575
 4. SQLite database file is created automatically on first run
 
 ### Testing with curl
 
 ```bash
 # Add a URL
-curl -X POST -d "key=test&url=https://www.google.com" http://127.0.0.1:8000/shorten
+curl -X POST -d "key=test&url=https://www.google.com" http://127.0.0.1:7575/shorten
 
 # Test redirect (should return 303 with location header)
-curl -I http://127.0.0.1:8000/test
+curl -I http://127.0.0.1:7575/test
 
 # Test non-existent key (should return 404)
-curl -I http://127.0.0.1:8000/nonexistent
+curl -I http://127.0.0.1:7575/nonexistent
 ```
 
 CSS changes require recompiling with Tailwind CLI since this project uses the standalone version rather than npm.

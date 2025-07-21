@@ -4,10 +4,13 @@ services:
   url-shortener:
     build: .
     ports:
-      - "8000:8000"
+      - "7575:7575"
     volumes:
-      - ./data:/app/data
+      - url_data:/app/data
     environment:
       - DATABASE_URL=/app/data/urls.db
       - RUST_LOG=info
     restart: unless-stopped
+
+volumes:
+  url_data:

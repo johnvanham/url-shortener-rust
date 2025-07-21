@@ -8,7 +8,11 @@
       "Bash(cargo:*)",
       "Bash(curl:*)",
       "Bash(pkill:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(docker build:*)",
+      "Bash(docker run:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker stop:*)"
     ],
     "deny": []
   }
