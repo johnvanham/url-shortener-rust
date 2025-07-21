@@ -1,3 +1,4 @@
+#![allow(renamed_and_removed_lints)]
 #[macro_use] extern crate rocket;
 use rocket::{response::{Redirect, status::NotFound}, fs::NamedFile, form::Form};
 use log::{info, error, warn};
@@ -14,7 +15,7 @@ async fn style() -> Option<NamedFile> {
 }
 
 #[derive(FromForm)]
-pub struct ShortenURLFormData {
+struct ShortenURLFormData {
     #[field(name = "key")]
     pub key: String,
 
@@ -26,7 +27,7 @@ pub struct ShortenURLFormData {
 fn shorten(url_to_shorten: Form<ShortenURLFormData>) -> String {
     let mut url_key = String::from("surl_");
     url_key.push_str(&url_to_shorten.key);
-    
+
     let form_data = url_to_shorten.into_inner();
     info!("Shortening URL - Key: {}, URL: {}", url_key, form_data.url);
 
@@ -47,7 +48,7 @@ fn shorten(url_to_shorten: Form<ShortenURLFormData>) -> String {
 #[get("/<url_key>")]
 fn short_url_redirect(url_key: String) -> Result<Redirect, NotFound<String>> {
     let key: String = format!("surl_{}", url_key);
-    
+
     info!("Redirecting request for key: {}", key);
 
     let db_result = db_handler::get_url_from_db(key.clone());
@@ -67,16 +68,16 @@ fn short_url_redirect(url_key: String) -> Result<Redirect, NotFound<String>> {
 #[launch]
 fn rocket() -> _ {
     env_logger::init();
-    
+
     info!("Starting URL Shortener application");
-    
+
     if let Err(e) = db_handler::init_database() {
         error!("Failed to initialize database: {}", e);
         panic!("Database initialization failed");
     }
-    
+
     info!("Application started successfully");
-    
+
     rocket::build()
         .mount("/", routes![index, style, shorten, short_url_redirect])
 }
